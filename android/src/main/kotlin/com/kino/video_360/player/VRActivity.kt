@@ -49,7 +49,7 @@ class VRActivity : Activity(), Player.Listener {
         (vrPlayer.videoSurfaceView as SphericalGLSurfaceView)
                 .setDefaultStereoMode(C.STEREO_MODE_STEREO_MESH)
 
-        vrplayer.setUseSensorRotation(false)
+        vrPlayer.setUseSensorRotation(false)
 
         bandwidthMeter = DefaultBandwidthMeter.Builder(this)
                 .build()
