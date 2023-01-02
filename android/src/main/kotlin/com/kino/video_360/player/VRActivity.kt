@@ -124,6 +124,9 @@ class VRActivity : Activity(), Player.Listener {
         val uri = Uri.parse(videoUrl)
         val mediaSource = buildMediaSource(videoUrl, buildDataSourceFactory(this, ""))
 
+        (vrPlayer.videoSurfaceView as SphericalGLSurfaceView)
+                .setUseSensorRotation(false)
+
         mediaSource?.let {
             player?.setMediaSource(it)
             player?.prepare()

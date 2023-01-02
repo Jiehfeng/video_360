@@ -116,6 +116,9 @@ class Video360UIView : FrameLayout, Player.Listener {
     fun initializePlayer(url: String, autoPlay: Boolean, repeat: Boolean) {
         player = ExoPlayer.Builder(context).build()
 
+        (vrPlayer.videoSurfaceView as SphericalGLSurfaceView)
+                .setUseSensorRotation(false)
+
         videoUrl = url
         isAutoPlay = autoPlay
         isRepeat = repeat
