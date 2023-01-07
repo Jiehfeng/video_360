@@ -7,14 +7,15 @@ import 'package:video_360/src/video360_android_view.dart';
 import 'package:video_360/src/video360_controller.dart';
 import 'package:video_360/src/video360_ios_view.dart';
 
-typedef Video360ViewCreatedCallback = void Function(
-    Video360Controller? controller);
+typedef Video360ViewCreatedCallback = void Function(Video360Controller? controller);
 typedef PlatformViewCreatedCallback = void Function(int id);
 
 class Video360View extends StatefulWidget {
   final Video360ViewCreatedCallback onVideo360ViewCreated;
 
   final String? url;
+  final double widthSet;
+  final double heightSet;
   final bool? isAutoPlay;
   final bool? isRepeat;
   final bool? useAndroidViewSurface;
@@ -24,6 +25,8 @@ class Video360View extends StatefulWidget {
   const Video360View({
     Key? key,
     required this.onVideo360ViewCreated,
+    required this.widthSet,
+    required this.heightSet,
     this.url,
     this.isAutoPlay = true,
     this.isRepeat = true,
@@ -36,8 +39,7 @@ class Video360View extends StatefulWidget {
   State<Video360View> createState() => _Video360ViewState();
 }
 
-class _Video360ViewState extends State<Video360View>
-    with WidgetsBindingObserver {
+class _Video360ViewState extends State<Video360View> with WidgetsBindingObserver {
   Video360Controller? controller;
   bool isPlatformChannel = false;
 
@@ -55,9 +57,7 @@ class _Video360ViewState extends State<Video360View>
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return isPlatformChannel == true
-          ? _getAndroidView()
-          : Container();
+      return isPlatformChannel == true ? _getAndroidView() : Container();
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return Container(
         child: GestureDetector(
@@ -66,19 +66,16 @@ class _Video360ViewState extends State<Video360View>
             onPlatformViewCreated: _onPlatformViewCreated,
           ),
           onPanStart: (details) {
-            controller?.onPanUpdate(
-                true, details.localPosition.dx, details.localPosition.dy);
+            controller?.onPanUpdate(true, details.localPosition.dx, details.localPosition.dy);
           },
           onPanUpdate: (details) {
-            controller?.onPanUpdate(
-                false, details.localPosition.dx, details.localPosition.dy);
+            controller?.onPanUpdate(false, details.localPosition.dx, details.localPosition.dy);
           },
         ),
       );
     }
     return Center(
-      child: Text(
-          '$defaultTargetPlatform is not supported by the video360_view plugin'),
+      child: Text('$defaultTargetPlatform is not supported by the video360_view plugin'),
     );
   }
 
@@ -91,8 +88,8 @@ class _Video360ViewState extends State<Video360View>
     controller = Video360Controller(
       id: id,
       url: widget.url,
-      width: width,
-      height: heigt,
+      width: widget.widthSet,
+      height: widget.heightSet,
       isAutoPlay: widget.isAutoPlay,
       isRepeat: widget.isRepeat,
       onCallback: widget.onCallback,
@@ -109,42 +106,40 @@ class _Video360ViewState extends State<Video360View>
   }
 
   Widget _getAndroidView() {
-    return widget.useAndroidViewSurface == true ? PlatformViewLink(
-      viewType: 'kino_video_360',
-      surfaceFactory: (
-          BuildContext context,
-          PlatformViewController controller,
-          ) {
-        return AndroidViewSurface(
-          controller: controller as AndroidViewController,
-          gestureRecognizers: const <
-              Factory<OneSequenceGestureRecognizer>>{},
-          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-        );
-      },
-      onCreatePlatformView: (PlatformViewCreationParams params) {
-        final ExpensiveAndroidViewController controller =
-        PlatformViewsService.initExpensiveAndroidView(
-          id: params.id,
-          viewType: 'kino_video_360',
-          layoutDirection: TextDirection.ltr,
-          // creationParams: creationParams,
-          creationParams: <String, dynamic>{},
-          creationParamsCodec: const StandardMessageCodec(),
-          onFocus: () => params.onFocusChanged(true),
-        );
-        controller
-          ..addOnPlatformViewCreatedListener(
-              params.onPlatformViewCreated)
-          ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
-          ..create();
+    return widget.useAndroidViewSurface == true
+        ? PlatformViewLink(
+            viewType: 'kino_video_360',
+            surfaceFactory: (
+              BuildContext context,
+              PlatformViewController controller,
+            ) {
+              return AndroidViewSurface(
+                controller: controller as AndroidViewController,
+                gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+              );
+            },
+            onCreatePlatformView: (PlatformViewCreationParams params) {
+              final ExpensiveAndroidViewController controller = PlatformViewsService.initExpensiveAndroidView(
+                id: params.id,
+                viewType: 'kino_video_360',
+                layoutDirection: TextDirection.ltr,
+                // creationParams: creationParams,
+                creationParams: <String, dynamic>{},
+                creationParamsCodec: const StandardMessageCodec(),
+                onFocus: () => params.onFocusChanged(true),
+              );
+              controller
+                ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+                ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
+                ..create();
 
-        return controller;
-      },
-    )
-    : Video360AndroidView(
-      viewType: 'kino_video_360',
-      onPlatformViewCreated: _onPlatformViewCreated,
-    );
+              return controller;
+            },
+          )
+        : Video360AndroidView(
+            viewType: 'kino_video_360',
+            onPlatformViewCreated: _onPlatformViewCreated,
+          );
   }
 }
