@@ -14,8 +14,6 @@ class Video360View extends StatefulWidget {
   final Video360ViewCreatedCallback onVideo360ViewCreated;
 
   final String? url;
-  final double widthSet;
-  final double heightSet;
   final bool? isAutoPlay;
   final bool? isRepeat;
   final bool? useAndroidViewSurface;
@@ -25,8 +23,6 @@ class Video360View extends StatefulWidget {
   const Video360View({
     Key? key,
     required this.onVideo360ViewCreated,
-    required this.widthSet,
-    required this.heightSet,
     this.url,
     this.isAutoPlay = true,
     this.isRepeat = true,
@@ -88,8 +84,8 @@ class _Video360ViewState extends State<Video360View> with WidgetsBindingObserver
     controller = Video360Controller(
       id: id,
       url: widget.url,
-      width: widget.widthSet,
-      height: widget.heightSet,
+      width: width,
+      height: heigt,
       isAutoPlay: widget.isAutoPlay,
       isRepeat: widget.isRepeat,
       onCallback: widget.onCallback,
