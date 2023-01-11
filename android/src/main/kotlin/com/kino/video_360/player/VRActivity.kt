@@ -158,25 +158,6 @@ class VRActivity : Activity(), Player.Listener {
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        val layout = ViewGroup.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
-        )
-
-        vrPlayer = findViewById(R.id.vr_player)
-
-        // Checking the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //First Hide other objects (listview or recyclerview), better hide them using Gone.
-            vrPlayer.layoutParams = layout
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //unhide your objects here.
-            vrPlayer.layoutParams = layout
-        }
-    }
-
     companion object {
         const val EXTRA_URL = "extra_url"
     }
