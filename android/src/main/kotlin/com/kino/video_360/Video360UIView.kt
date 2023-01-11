@@ -55,7 +55,7 @@ class Video360UIView : FrameLayout, Player.Listener {
 
     private fun init() {
         val layout = ViewGroup.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
         )
         layoutParams = layout
 
