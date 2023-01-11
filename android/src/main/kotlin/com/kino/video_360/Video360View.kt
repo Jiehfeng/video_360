@@ -34,7 +34,7 @@ class Video360View(context: Context, messenger: BinaryMessenger, id: Int, textur
         videoView = Video360UIView(context, textureRegistry)
 
         val layout = ViewGroup.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
         )
         videoView.layoutParams = layout
 
