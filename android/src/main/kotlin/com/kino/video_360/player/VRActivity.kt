@@ -2,15 +2,18 @@ package com.kino.video_360.player
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.FrameLayout
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.dash.DashMediaSource
@@ -152,6 +155,25 @@ class VRActivity : Activity(), Player.Listener {
             }
             Player.STATE_ENDED -> {
             }
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        val layout = ViewGroup.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        vrPlayer = findViewById(R.id.vr_player)
+
+        // Checking the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //First Hide other objects (listview or recyclerview), better hide them using Gone.
+            vrPlayer.layoutParams = layout
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            //unhide your objects here.
+            vrPlayer.layoutParams = layout
         }
     }
 

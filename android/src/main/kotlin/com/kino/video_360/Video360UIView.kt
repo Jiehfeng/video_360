@@ -55,7 +55,7 @@ class Video360UIView : FrameLayout, Player.Listener {
 
     private fun init() {
         val layout = ViewGroup.LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
+            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
         )
         layoutParams = layout
 
@@ -66,6 +66,8 @@ class Video360UIView : FrameLayout, Player.Listener {
         (vrPlayer.videoSurfaceView as SphericalGLSurfaceView)
                 .setDefaultStereoMode(C.STEREO_MODE_STEREO_MESH)
         vrPlayer.useController = false
+
+        vrPlayer.layoutParams = layout
         // vrPlayer.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
 
         bandwidthMeter = DefaultBandwidthMeter.Builder(context)
