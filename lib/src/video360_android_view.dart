@@ -14,5 +14,6 @@ class Video360AndroidView extends AndroidView {
           onPlatformViewCreated: onPlatformViewCreated,
           creationParams: <String, dynamic>{},
           creationParamsCodec: const StandardMessageCodec(),
+          clipBehavior: Clip.none,
         );
 }
